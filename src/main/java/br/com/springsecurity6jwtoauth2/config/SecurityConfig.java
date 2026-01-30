@@ -34,7 +34,7 @@ public class SecurityConfig {
 
 
     @Bean
-    private SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
