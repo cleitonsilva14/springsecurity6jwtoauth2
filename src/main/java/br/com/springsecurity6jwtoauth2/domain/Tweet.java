@@ -22,7 +22,7 @@ public class Tweet {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserDomain userDomain;
+    private User user;
 
     private String content;
 
