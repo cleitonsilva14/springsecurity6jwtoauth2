@@ -32,5 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-
+## ssl
 src/main/resources/*.key
+src/main/resources/*.pub
