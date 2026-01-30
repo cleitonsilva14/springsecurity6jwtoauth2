@@ -4,7 +4,6 @@ package br.com.springsecurity6jwtoauth2.controller;
 import br.com.springsecurity6jwtoauth2.dto.LoginRequest;
 import br.com.springsecurity6jwtoauth2.dto.LoginResponse;
 import br.com.springsecurity6jwtoauth2.repository.UserRepository;
-import com.nimbusds.jwt.JWTClaimsSet;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
