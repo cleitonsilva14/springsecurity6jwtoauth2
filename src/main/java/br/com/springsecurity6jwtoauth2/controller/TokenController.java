@@ -39,7 +39,7 @@ public class TokenController {
         var expiresIn = 300L;
 
         var claims = JwtClaimsSet.builder()
-                .issuer("mybackend")
+                .issuer("backend")
                 .subject(user.get().getUserUUID().toString())
                 .expiresAt(now.plusSeconds(expiresIn))
                 .issuedAt(now)
@@ -49,11 +49,7 @@ public class TokenController {
 
         return ResponseEntity.ok(new LoginResponse(jwtValue, expiresIn));
 
-
-
-
-
-
+        // 58 min
     }
 
 }
