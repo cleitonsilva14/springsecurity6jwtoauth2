@@ -33,14 +33,17 @@ public class SecurityConfig {
     @Value("${jwt.private.key}")
     private RSAPrivateKey privateKey;
 
+    private static final String[] PUBLIC_URLS = {};
+
 
     @Bean
     public SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers(HttpMethod.POST, "/login")
-                                .permitAll()
+                        authorize
+                                .requestMatchers(HttpMethod.POST, "/login") .permitAll()
+                                .requestMatchers(HttpMethod.POST, "/user") .permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
