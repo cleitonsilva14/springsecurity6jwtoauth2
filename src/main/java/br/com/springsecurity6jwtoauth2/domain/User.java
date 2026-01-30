@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_user")
-public class UserDomain {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
