@@ -1,10 +1,12 @@
 package br.com.springsecurity6jwtoauth2.domain;
 
+import br.com.springsecurity6jwtoauth2.dto.LoginRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 import java.util.UUID;
@@ -35,4 +37,7 @@ public class User {
     )
     private Set<Role> roles;
 
+    public boolean isLoginCorrect(LoginRequest loginRequest, PasswordEncoder  passwordEncoder) {
+        return  passwordEncoder.matches(loginRequest.password(), this.password);
+    }
 }
