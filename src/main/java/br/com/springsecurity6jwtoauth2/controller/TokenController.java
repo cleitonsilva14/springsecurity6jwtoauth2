@@ -1,6 +1,7 @@
 package br.com.springsecurity6jwtoauth2.controller;
 
 
+import br.com.springsecurity6jwtoauth2.domain.Role;
 import br.com.springsecurity6jwtoauth2.dto.LoginRequest;
 import br.com.springsecurity6jwtoauth2.dto.LoginResponse;
 import br.com.springsecurity6jwtoauth2.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -37,18 +39,30 @@ public class TokenController {
         var now = Instant.now();
         var expiresIn = 300L;
 
+
+        var scope = user.get()
+                .getRoles()
+                .stream()
+                .map(Role::getName)
+                .collect(Collectors.joining(""));
+
+
         var claims = JwtClaimsSet.builder()
                 .issuer("backend")
                 .subject(user.get().getUserUUID().toString())
                 .expiresAt(now.plusSeconds(expiresIn))
+                .claim("scope", scope)
                 .issuedAt(now)
                 .build();
 
-        var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+
+        var jwtValue = jwtEncoder
+                .encode(JwtEncoderParameters.from(claims))
+                .getTokenValue();
 
         return ResponseEntity.ok(new LoginResponse(jwtValue, expiresIn));
 
-        // 58 min
     }
 
 }

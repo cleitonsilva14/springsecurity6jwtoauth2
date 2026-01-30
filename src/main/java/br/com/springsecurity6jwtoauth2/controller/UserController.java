@@ -9,13 +9,16 @@ import br.com.springsecurity6jwtoauth2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -47,6 +50,15 @@ public class UserController {
 
         userRepository.save(user);
         return ResponseEntity.ok().build();
+
+    }
+
+
+    @GetMapping("/user")
+    @PreAuthorize("hasAuthority('SCOPE_admin')") // apenas usuários ADMIN pode chamar
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
+
     }
 
 
