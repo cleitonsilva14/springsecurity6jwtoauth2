@@ -3,9 +3,13 @@ package br.com.springsecurity6jwtoauth2.controller;
 import br.com.springsecurity6jwtoauth2.domain.Role;
 import br.com.springsecurity6jwtoauth2.domain.Tweet;
 import br.com.springsecurity6jwtoauth2.dto.CreateTweetDto;
+import br.com.springsecurity6jwtoauth2.dto.FeedDto;
+import br.com.springsecurity6jwtoauth2.dto.FeedItemDto;
 import br.com.springsecurity6jwtoauth2.repository.TweetRepository;
 import br.com.springsecurity6jwtoauth2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -44,9 +48,6 @@ public class TweetController {
 
         var  user = userRepository.findById(UUID.fromString(token.getName()));
 
-
-
-
         var tweet = tweetRepository.findById(tweetId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -66,6 +67,20 @@ public class TweetController {
         return ResponseEntity
                 .ok()
                 .build();
+    }
+
+
+    @GetMapping("/feed")
+    public ResponseEntity<FeedDto> feed(@RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "size", defaultValue = "10") int size){
+
+        var tweets = tweetRepository
+                .findAll(PageRequest.of(page, size, Sort.Direction.DESC, "creationTimestamp"))
+                .map(tweet
+                        -> new FeedItemDto(tweet.getTweetId(), tweet.getContent(), tweet.getUser().getUsername()));
+
+        return ResponseEntity.ok(new FeedDto(tweets.getContent(), page, size, tweets.getTotalPages(), tweets.getTotalElements()));
+
     }
 
 
