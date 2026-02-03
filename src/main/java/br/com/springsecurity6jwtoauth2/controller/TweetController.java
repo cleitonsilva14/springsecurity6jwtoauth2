@@ -32,7 +32,9 @@ public class TweetController {
 
         tweetRepository.save(tweet);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity
+                .ok()
+                .build();
     }
 
 
